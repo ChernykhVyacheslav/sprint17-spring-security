@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RoleServiceImpl implements RoleService {
@@ -30,5 +31,33 @@ public class RoleServiceImpl implements RoleService {
     public List<Role> getAll() {
         List<Role> roles = roleRepository.findAll();
         return roles.isEmpty() ? new ArrayList<>() : roles;
+    }
+
+    @Override
+    public Role createOrUpdate(Role role) {
+
+        if (role.getId() != null) {
+
+            Optional<Role> roleOptional = roleRepository.findById(role.getId());
+
+            if (roleOptional.isPresent()) {
+                Role newRole = roleOptional.get();
+                newRole.setName(role.getName());
+                return roleRepository.save(newRole);
+            }
+        }
+
+        return roleRepository.save(role);
+    }
+
+    @Override
+    public void deleteRoleById(Long id) {
+        Optional<Role> role = roleRepository.findById(id);
+
+        if (role.isPresent()) {
+            roleRepository.deleteById(id);
+        } else {
+            throw new EntityNotFoundException("No role exist for given id");
+        }
     }
 }
