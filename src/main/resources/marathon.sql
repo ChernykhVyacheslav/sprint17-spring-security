@@ -1,3 +1,10 @@
+drop table if exists marathon;
+drop table if exists sprint;
+drop table if exists task;
+drop table if exists users;
+drop table if exists roles;
+drop table if exists marathon_user;
+
 create table if not exists marathon
 (
     id bigserial not null
