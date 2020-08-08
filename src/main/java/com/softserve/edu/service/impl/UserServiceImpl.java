@@ -42,6 +42,10 @@ public class UserServiceImpl implements UserService {
         return userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(("No user /w id "+id)));
     }
 
+    public User getUserByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
     public User createOrUpdateUser(User entity) {
         entity.setPassword(bCryptPasswordEncoder.encode(entity.getPassword()));
         return userRepository.save(entity);
