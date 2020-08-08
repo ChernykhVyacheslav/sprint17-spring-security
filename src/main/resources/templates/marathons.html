@@ -23,7 +23,12 @@
             <td th:text="${iStat.index + 1}" />
             <td th:text="${marathon.id}" />
             <td>
-                <a th:href="@{|/students/${marathon.id}|}" th:text="${marathon.title}" />
+                <!--Reference for mentors-->
+                <a th:href="@{|/students/${marathon.id}|}" th:text="${marathon.title}"
+                   sec:authorize="hasRole('ROLE_MENTOR')"/>
+                <!--Reference for trainees-->
+                <a th:href="@{/sprints/{marathon_id}(marathon_id=${marathon.id})}" th:text="${marathon.title}"
+                   sec:authorize="hasRole('ROLE_STUDENT')"/>
             </td>
             <td sec:authorize="hasRole('ROLE_MENTOR')">
                 <a th:href="@{|/marathons/edit/${marathon.id}|}">Edit</a>
