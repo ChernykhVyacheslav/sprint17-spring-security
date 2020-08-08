@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
 <head>
     <meta charset="UTF-8">
     <title>List of Marathons</title>
@@ -7,7 +8,7 @@
 <body>
     <div th:replace="header"></div>
     <h2>List of Marathons</h2>
-    <form action="#" th:action="@{/create-marathon}" method="get">
+    <form action="#" th:action="@{/create-marathon}" method="get"  sec:authorize="hasRole('ROLE_MENTOR')">
         <input type="submit" value="Create Marathon">
     </form>
     <br>
@@ -16,19 +17,24 @@
             <th>No.</th>
             <th>Id</th>
             <th>Title</th>
-            <th colspan="2">Operations</th>
+            <th sec:authorize="hasRole('ROLE_MENTOR')" colspan="2">Operations</th>
             <th>Sprints</th>
         </tr>
         <tr th:each="marathon, iStat: ${marathons}">
             <td th:text="${iStat.index + 1}" />
             <td th:text="${marathon.id}" />
             <td>
-                <a th:href="@{|/students/${marathon.id}|}" th:text="${marathon.title}" />
+                <!--Reference for mentors-->
+                <a th:href="@{|/students/${marathon.id}|}" th:text="${marathon.title}"
+                   sec:authorize="hasRole('ROLE_MENTOR')"/>
+                <!--Reference for trainees-->
+                <a th:href="@{/sprints/{marathon_id}(marathon_id=${marathon.id})}" th:text="${marathon.title}"
+                   sec:authorize="hasRole('ROLE_STUDENT')"/>
             </td>
-            <td >
+            <td sec:authorize="hasRole('ROLE_MENTOR')">
                 <a th:href="@{|/marathons/edit/${marathon.id}|}">Edit</a>
             </td>
-            <td>
+            <td sec:authorize="hasRole('ROLE_MENTOR')"  >
                 <a th:href="@{|/marathons/delete/${marathon.id}|}">Close</a>
             </td>
             <td>
