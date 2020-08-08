@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml" lang="en">
 <head>
     <meta charset="UTF-8">
     <title>List of Sprints</title>
@@ -7,7 +7,7 @@
 <body>
 <div th:replace="header"></div>
 <h2>List of Sprints</h2>
-<form th:action="@{/create-sprint/{marathon_id}(marathon_id=${marathon_id})}" method="get">
+<form th:action="@{/create-sprint/{marathon_id}(marathon_id=${marathon_id})}" method="get"  sec:authorize="hasRole('ROLE_MENTOR')">
     <input type="submit" value="Create Sprint">
 </form>
 <br>
@@ -18,7 +18,7 @@
         <th>Title</th>
         <th>Start</th>
         <th>Finish</th>
-        <th colspan="2">Operations</th>
+        <th colspan="2" sec:authorize="hasRole('ROLE_MENTOR')">Operations</th>
     </tr>
     <tr th:each="sprint, iStat: ${sprints}">
         <td th:text="${iStat.index + 1}"/>
@@ -27,10 +27,10 @@
         <td th:text="${sprint.startDate}"/>
         <td th:text="${sprint.endDate}"/>
 
-        <td>
+        <td sec:authorize="hasRole('ROLE_MENTOR')">
             <a th:href="@{|/sprints/edit/${sprint.id}|}" th:text="Edit"/>
         </td>
-        <td>
+        <td sec:authorize="hasRole('ROLE_MENTOR')">
             <a th:href="@{|/sprints/delete/${sprint.id}|}" th:text="Delete"/>
         </td>
     </tr>
