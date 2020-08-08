@@ -30,18 +30,21 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
                 .antMatchers("/marathons", "/sprints/*", "/home", "/").fullyAuthenticated()
                 .antMatchers("/marathons/**", "/students/**", "/sprints/**", "/**").hasRole("MENTOR")
                 .anyRequest().authenticated()
-                    .and()
+                .and()
                 .formLogin()
                 .loginPage("/login-form")
                 .loginProcessingUrl("/login")
                 .defaultSuccessUrl("/home")
                 .failureUrl("/login-form?error=true")
                 .permitAll()
-                    .and()
+                .and()
                 .logout()
                 .logoutUrl("/perform-logout")
                 .logoutSuccessUrl("/login-form")
-                .deleteCookies("JSESSIONID");
+                .deleteCookies("JSESSIONID")
+                .and()
+                .exceptionHandling()
+                .accessDeniedPage("/access-denied");
     }
 
     @Autowired
