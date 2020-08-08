@@ -5,6 +5,7 @@ import com.softserve.edu.model.User;
 import com.softserve.edu.service.MarathonService;
 import com.softserve.edu.service.UserService;
 import lombok.Data;
+import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -46,12 +47,15 @@ public class MarathonController {
     @GetMapping("/marathons/edit/{id}")
     public String updateMarathon(@PathVariable long id, Model model) {
         Marathon marathon = marathonService.getMarathonById(id);
+        CsrfToken token = (CsrfToken) model.getAttribute("_csrf");
+        model.addAttribute("_csrf", token);
         model.addAttribute("marathon", marathon);
         return "update-marathon";
     }
 
     @PostMapping("/marathons/edit/{id}")
-    public String updateMarathon(@PathVariable long id, @ModelAttribute Marathon marathon, BindingResult result) {
+    public String updateMarathon(@PathVariable long id, @ModelAttribute Marathon marathon,
+                                 BindingResult result, String csrfToken) {
         if (result.hasErrors()) {
             return "update-marathon";
         }
