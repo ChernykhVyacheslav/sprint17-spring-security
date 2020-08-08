@@ -39,8 +39,8 @@ public class MarathonController {
     @GetMapping("/marathons")
     public String getAllMarathons(Model model, Authentication authentication) {
         List<Marathon> marathons = marathonService.getAll();
-        User user = studentService.getUserByEmail(authentication.getName());
-        if (user.getRole().getName().equals("ROLE_STUDENT")) {
+        if (authentication.getPrincipal().equals("ROLE_STUDENT")) {
+            User user = studentService.getUserByEmail(authentication.getName());
             marathons = marathons.stream().filter(
                     marathon -> marathon.getUsers().contains(user)
             ).collect(Collectors.toList());
