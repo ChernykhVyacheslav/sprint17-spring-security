@@ -9,6 +9,7 @@ import java.util.List;
 public interface UserService extends UserDetailsService {
     List<User> getAll();
     User getUserById(Long id);
+    User getUserByEmail(String email);
     User createOrUpdateUser( User user);
     void deleteUserById(Long id);
     boolean addUserToMarathon(User user, Marathon marathon);

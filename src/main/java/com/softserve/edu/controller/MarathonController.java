@@ -5,6 +5,7 @@ import com.softserve.edu.model.User;
 import com.softserve.edu.service.MarathonService;
 import com.softserve.edu.service.UserService;
 import lombok.Data;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -33,6 +34,21 @@ public class MarathonController {
         model.addAttribute("marathon", new Marathon());
         return "create-marathon";
     }
+
+
+    @GetMapping("/marathons")
+    public String getAllMarathons(Model model, Authentication authentication) {
+        List<Marathon> marathons = marathonService.getAll();
+        User user = studentService.getUserByEmail(authentication.getName());
+        if (user.getRole().getName().equals("ROLE_STUDENT")) {
+            marathons = marathons.stream().filter(
+                    marathon -> marathon.getUsers().contains(user)
+            ).collect(Collectors.toList());
+        }
+        model.addAttribute("marathons", marathons);
+        return "marathons";
+    }
+
 
     @PostMapping("/marathons")
     public String createMarathon(@Validated @ModelAttribute Marathon marathon, BindingResult result) {
@@ -76,13 +92,6 @@ public class MarathonController {
         model.addAttribute("all_students", studentService.getAll());
         model.addAttribute("marathon", marathon);
         return "marathon-students";
-    }
-
-    @GetMapping("/marathons")
-    public String getAllMarathons(Model model) {
-        List<Marathon> marathons = marathonService.getAll();
-        model.addAttribute("marathons", marathons);
-        return "marathons";
     }
 
 }
