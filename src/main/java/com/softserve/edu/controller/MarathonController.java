@@ -47,8 +47,6 @@ public class MarathonController {
     @GetMapping("/marathons/edit/{id}")
     public String updateMarathon(@PathVariable long id, Model model) {
         Marathon marathon = marathonService.getMarathonById(id);
-        CsrfToken token = (CsrfToken) model.getAttribute("_csrf");
-        model.addAttribute("_csrf", token);
         model.addAttribute("marathon", marathon);
         return "update-marathon";
     }
