@@ -4,6 +4,7 @@ import com.softserve.edu.exception.EntityNotFoundException;
 import com.softserve.edu.model.Marathon;
 import com.softserve.edu.model.User;
 import com.softserve.edu.repository.MarathonRepository;
+import com.softserve.edu.repository.RoleRepository;
 import com.softserve.edu.repository.UserRepository;
 import com.softserve.edu.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,14 +24,17 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final MarathonRepository marathonRepository;
+    private final RoleRepository roleRepository;
 
     @Autowired
     BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public UserServiceImpl(UserRepository userRepository,
-                           MarathonRepository marathonRepository) {
+                           MarathonRepository marathonRepository,
+                           RoleRepository roleRepository) {
         this.userRepository = userRepository;
         this.marathonRepository = marathonRepository;
+        this.roleRepository = roleRepository;
     }
 
     public List<User> getAll() {
@@ -83,6 +87,12 @@ public class UserServiceImpl implements UserService {
                 user.getEmail(),
                 user.getPassword(),
                 user.getAuthorities());
+    }
+
+    @Override
+    public List<User> getAllByRole(String role) {
+        List<User> users = userRepository.findAllByRole(roleRepository.findByName(role));
+        return users.isEmpty() ? new ArrayList<>() : users;
     }
 
 }

@@ -14,4 +14,6 @@ public interface UserService extends UserDetailsService {
     void deleteUserById(Long id);
     boolean addUserToMarathon(User user, Marathon marathon);
     boolean deleteUserFromMarathon(User user, Marathon marathon);
+
+    List<User> getAllByRole(String role);
 }

@@ -68,7 +68,7 @@ public class MarathonController {
 
     @PostMapping("/marathons/edit/{id}")
     public String updateMarathon(@PathVariable long id, @ModelAttribute Marathon marathon,
-                                 BindingResult result, String csrfToken) {
+                                 BindingResult result) {
         if (result.hasErrors()) {
             return "update-marathon";
         }

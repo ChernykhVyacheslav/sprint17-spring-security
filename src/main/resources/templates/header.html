@@ -5,6 +5,7 @@
         <a th:href="@{/}">Home Page</a> |
         <a th:href="@{/marathons}">List of Marathons</a>
         <a sec:authorize="hasRole('ROLE_MENTOR')" th:href="@{/students}"> | List of Students</a>
+        <a sec:authorize="hasRole('ROLE_MENTOR')" th:href="@{/mentors}"> | List of Mentors</a>
     </div>
     <div sec:authorize="isAuthenticated()">
         <form th:action="@{/perform-logout}" method="post" style="position: absolute; top: 10px; right: 20px;">

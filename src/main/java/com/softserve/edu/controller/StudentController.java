@@ -88,7 +88,14 @@ public class StudentController {
 
     @GetMapping("/students")
     public String getAllStudents(Model model) {
-        List<User> students = studentService.getAll();
+        List<User> students = studentService.getAllByRole("ROLE_STUDENT");
+        model.addAttribute("students", students);
+        return "students";
+    }
+
+    @GetMapping("/mentors")
+    public String getAllMentors(Model model) {
+        List<User> students = studentService.getAllByRole("ROLE_MENTOR");
         model.addAttribute("students", students);
         return "students";
     }
