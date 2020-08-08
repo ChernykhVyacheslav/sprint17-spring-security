@@ -2,12 +2,11 @@ package com.softserve.edu.service;
 
 import com.softserve.edu.model.Marathon;
 import com.softserve.edu.model.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;
 
-public interface UserService {
+public interface UserService extends UserDetailsService {
     List<User> getAll();
     User getUserById(Long id);
     User createOrUpdateUser( User user);

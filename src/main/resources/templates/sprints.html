@@ -5,34 +5,35 @@
     <title>List of Sprints</title>
 </head>
 <body>
-    <div th:replace="header"></div>
-    <h2>List of Sprints</h2>
-    <form th:action="@{/create-sprint/{marathon_id}(marathon_id=${marathon_id})}" method="get">
-        <input type="submit" value="Create Sprint">
-    </form>
-    <br>
-    <table border="1">
-        <tr>
-            <th>No.</th>
-            <th>Id</th>
-            <th>Title</th>
-            <th>Start</th>
-            <th>Finish</th>
-            <th colspan="2">Operations</th>
-        </tr>
-        <tr th:each="sprint, iStat: ${sprints}">
-            <td th:text="${iStat.index + 1}" />
-            <td th:text="${sprint.id}" />
-            <td th:text="${sprint.title}" />
-            <td th:text="${sprint.startDate}" />
-            <td th:text="${sprint.endDate}" />
-            <td >
-                <a href="#">Edit</a>
-            </td>
-            <td>
-                <a href="#">Delete</a>
-            </td>
-        </tr>
-    </table>
+<div th:replace="header"></div>
+<h2>List of Sprints</h2>
+<form th:action="@{/create-sprint/{marathon_id}(marathon_id=${marathon_id})}" method="get">
+    <input type="submit" value="Create Sprint">
+</form>
+<br>
+<table border="1">
+    <tr>
+        <th>No.</th>
+        <th>Id</th>
+        <th>Title</th>
+        <th>Start</th>
+        <th>Finish</th>
+        <th colspan="2">Operations</th>
+    </tr>
+    <tr th:each="sprint, iStat: ${sprints}">
+        <td th:text="${iStat.index + 1}"/>
+        <td th:text="${sprint.id}"/>
+        <td th:text="${sprint.title}"/>
+        <td th:text="${sprint.startDate}"/>
+        <td th:text="${sprint.endDate}"/>
+
+        <td>
+            <a th:href="@{|/sprints/edit/${sprint.id}|}" th:text="Edit"/>
+        </td>
+        <td>
+            <a th:href="@{|/sprints/delete/${sprint.id}|}" th:text="Delete"/>
+        </td>
+    </tr>
+</table>
 </body>
 </html>
