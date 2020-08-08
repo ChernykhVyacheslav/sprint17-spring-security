@@ -62,11 +62,9 @@ public class Application implements CommandLineRunner {
             sprintService.updateSprint(sprint2);
             sprintService.addSprintToMarathon(sprint2, marathon2);
         }
-        Role mentorRole = new Role();
-        mentorRole.setName("MENTOR");
+        Role mentorRole = new Role("ROLE_MENTOR");
         roleService.createOrUpdate(mentorRole);
-        Role studentRole = new Role();
-        studentRole.setName("STUDENT");
+        Role studentRole = new Role("ROLE_STUDENT");
         roleService.createOrUpdate(studentRole);
         for (int i = 0; i < 2; i++) {
             User mentor = new User();

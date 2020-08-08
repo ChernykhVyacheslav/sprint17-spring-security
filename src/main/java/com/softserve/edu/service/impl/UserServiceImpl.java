@@ -6,13 +6,13 @@ import com.softserve.edu.model.User;
 import com.softserve.edu.repository.MarathonRepository;
 import com.softserve.edu.repository.UserRepository;
 import com.softserve.edu.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +23,9 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final MarathonRepository marathonRepository;
+
+    @Autowired
+    BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public UserServiceImpl(UserRepository userRepository,
                            MarathonRepository marathonRepository) {
@@ -40,6 +43,7 @@ public class UserServiceImpl implements UserService {
     }
 
     public User createOrUpdateUser(User entity) {
+        entity.setPassword(bCryptPasswordEncoder.encode(entity.getPassword()));
         return userRepository.save(entity);
     }
 
@@ -62,4 +66,19 @@ public class UserServiceImpl implements UserService {
         marathonEntity.getUsers().remove(userEntity);
         return marathonRepository.save(marathonEntity) != null;
     }
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        User user = userRepository.findByEmail(email);
+
+        if(user == null) {
+            throw new UsernameNotFoundException("User not found");
+        }
+
+        return new org.springframework.security.core.userdetails.User(
+                user.getEmail(),
+                user.getPassword(),
+                user.getAuthorities());
+    }
+
 }

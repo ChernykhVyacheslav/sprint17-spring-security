@@ -9,13 +9,12 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 @Data
-@Entity(name="users")
+@Entity(name = "users")
 public class User implements UserDetails {
 
     @Id
@@ -32,12 +31,12 @@ public class User implements UserDetails {
 
     @Column(unique = true)
     @NotBlank
-    @Pattern(regexp=".+@.+\\..+", message = "Please provide a valid email address")
+    @Pattern(regexp = ".+@.+\\..+", message = "Please provide a valid email address")
     private String email;
 
     @ToString.Exclude
     @ManyToOne
-    @JoinColumn(name="role_id", nullable = false)
+    @JoinColumn(name = "role_id", nullable = false)
     private Role role;
 
     @NotBlank
