@@ -14,16 +14,8 @@ public class LoginController {
         return "login-page";
     }
 
-
-    @PostMapping("/access-denied")
+    @RequestMapping("/access-denied")
     public String showAccessDenied() {
         return "access-denied";
-    }
-
-    @RequestMapping(value="/csrf-token", method=RequestMethod.GET)
-    public @ResponseBody
-    String getCsrfToken(HttpServletRequest request) {
-        CsrfToken token = (CsrfToken)request.getAttribute(CsrfToken.class.getName());
-        return token.getToken();
     }
 }
